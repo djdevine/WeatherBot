@@ -1,32 +1,52 @@
-console.log('Bot Starting')
+console.log('Bot Starting');
 
-var Twit = require('twit')
+const fs = require('fs');
 
-var config = require('./config')
+var Twit = require('twit');
 
-var T = new Twit(config)
+var config = require('./config');
 
-console.log('Connected to Twitter')
+var T = new Twit(config);
+
+console.log('Connected to Twitter');
 
 function fcn_tweeted(err, data, response) {
 	if (err) {
-		console.log("Issue posting tweet")
+		console.log("Issue posting tweet");
 	}
 	else {
-		console.log("Posted")
+		console.log("Posted");
 	}
-	console.log(data)
+	console.log(data);
 }
 
-function post_tweet() {
-	var ranint = Math.floor(Math.random()*100);
-
-	var tweet = {
-		status: 'Testing Testing ' + ranint
-	}
-
-	T.post('statuses/update', tweet, fcn_tweeted);
+function post_tweet(img_path) {
+	var b64content = fs.readFileSync(img_path, { encoding: 'base64' });
+	T.post('media/upload', { media_data: b64content }, function (err, data, response) {
+		var mediaIdStr = data.media_id_string;
+  		var altText = "It's Amazing!";
+  		var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
+ 
+  		T.post('media/metadata/create', meta_params, function (err, data, response) {
+    		if (!err) {
+      			// now we can reference the media and post a tweet (media will attach to the tweet)
+      			var params = { status: "It's Amazing!", media_ids: [mediaIdStr] };
+ 
+      			T.post('statuses/update', params, function (err, data, response) {
+        			console.log("I just posted the file at " + img_path);
+      			})
+    		}
+  		})
+	})
 }
 
-post_tweet()
-setInterval(post_tweet, 1000*60*60*12)
+function fact_time() {
+	var image_number = Math.floor(Math.random() * 17) + 1;
+
+	var image_loc = "images/IMG" + image_number + ".jpg";
+
+	post_tweet(image_loc);
+}
+
+fact_time();
+setInterval(fact_time, 1000*30);//60*60*12)
