@@ -1,0 +1,30 @@
+{
+  "name": "weatherbot",
+  "version": "1.0.0",
+  "description": "Twitter bot to post amazing weather facts",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djdevine/WeatherBot.git"
+  },
+  "keywords": [
+    "weather",
+    "facts",
+    "twitter",
+    "bot",
+    "amazing"
+  ],
+  "author": "Daniel Devine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/djdevine/WeatherBot/issues"
+  },
+  "homepage": "https://github.com/djdevine/WeatherBot#readme",
+  "dependencies": {
+    "twit": "^2.2.11"
+  }
+}
