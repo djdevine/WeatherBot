@@ -49,4 +49,4 @@ function fact_time() {
 }
 
 fact_time();
-setInterval(fact_time, 1000*30);//60*60*12)
+setInterval(fact_time, 1000*60*60*12)
