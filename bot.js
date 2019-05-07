@@ -6,6 +6,13 @@ var Twit = require('twit');
 
 var config = require('./config');
 
+var image_list = [];
+for (var i = 1; i <= 17; i++) {
+    image_list.push(i);
+}
+
+var images_posted = 0;
+
 var T = new Twit(config);
 
 console.log('Connected to Twitter');
@@ -40,13 +47,28 @@ function post_tweet(img_path) {
 	})
 }
 
-function fact_time() {
-	var image_number = Math.floor(Math.random() * 17) + 1;
+function shuffle_images(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
-	var image_loc = "images/IMG" + image_number + ".jpg";
+function fact_time() {
+	var image_loc = "images/IMG" + image_list[images_posted] + ".jpg";
+
+	if (images_posted < 16) {
+		images_posted ++;
+	}
+	else {
+		shuffle_images(image_list);
+		images_posted = 0;
+	}
 
 	post_tweet(image_loc);
+
+	var time_period = 1000*60*60*(Math.random()*6 + 10);
+	setTimeout(fact_time, time_period)
 }
 
 fact_time();
-setInterval(fact_time, 1000*60*60*12)
